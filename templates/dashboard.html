@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard</title>
+    <style>
+        .nav-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+        body {
+               display: flex;
+               flex-direction: column;
+               align-items: center;
+               justify-content: center;
+               min-height: 100vh;
+               line-height: 2;
+           }
+        h1{
+            font-weight: bold;
+            text-align: center;
+            background-color: #ffcc00; /* 배경색 변경 */
+            color: #fff; /* 텍스트 색상 변경 */
+            padding: 1.5rem; /* 여백 증가 */
+            border-radius: 1rem; /* 모서리 둥글기 증가 */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* 그림자 효과 증가 */
+         }
+        h2 {
+            font-weight: bold;
+            text-align: center;
+            background-color: #ffcc00; /* 배경색 변경 */
+            color: #fff; /* 텍스트 색상 변경 */
+            padding: 1.5rem; /* 여백 증가 */
+            width: 100%; /* 가로 폭을 100%로 설정 */
+            height: 1.5rem; /* 높이 조정 */
+            line-height: 1.5rem; /* 텍스트 수직 중앙 정렬 */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* 그림자 효과 증가 */
+        }
+     </style>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <h1>Dashboard</h1>
+    <a href="{{ url_for('profile') }}">Profile</a>
+    <a href="{{ url_for('upload') }}">Upload Photo</a>
+    <a href="{{ url_for('search') }}">Search Photos</a>
+    <a href="{{ url_for('messages') }}">Messages</a>
+    <a href="{{ url_for('logout') }}">Log Out</a>
+    <a href="{{ url_for('user_list') }}">User List</a>
+    <h2>All Photos</h2>
+    <ul>
+        {% for photo in photos %}
+            <li>
+                Uploaded by: <a href="{{ url_for('user_profile', username=photo[5]) }}">{{ photo[5] }}</a><br>
+                <img src="{{ url_for('static', filename='uploads/' + photo[2]) }}" width="500"><br>
+                Description: {{ photo[3] }}<br>
+                Keywords: {{ photo[4] }}<br>
+                {% if photo[1] != session['user_id'] %}
+                    <form action="{{ url_for('send_post_message', post_id=photo[0]) }}" method="post">
+                        Message: <input type="text" name="content"><br>
+                        <input type="submit" value="Direct Message"><br>
+                    </form>
+                {% endif %}
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

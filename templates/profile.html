@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Profile</title>
+    <style>
+        body {
+               display: flex;
+               flex-direction: column;
+               align-items: center;
+               justify-content: center;
+               min-height: 100vh;
+               line-height: 2;
+           }
+        h1 {
+            font-weight: bold;
+            text-align: center;
+            background-color: #ffcc00;
+            color: #fff; 
+            padding: 1.5rem;
+            border-radius: 1rem; 
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
+        } 
+         
+     </style>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <h1>Profile</h1>
+    <a href="{{ url_for('dashboard') }}">Back to Dashboard</a>
+    <h2>User Info</h2>
+    <p>Username: {{ user[1] }}</p>
+    <form action="{{ url_for('profile') }}" method="post">
+        Instructions: <textarea name="instructions">{{ user[3] }}</textarea><br>
+        Interests: <input type="text" name="interests" value="{{ user[4] }}"><br>
+        <input type="submit" value="Update Profile">
+    </form>
+    <h2>Your Photos</h2>
+    <ul>
+        {% for photo in photos %}
+            <li>
+                <img src="{{ url_for('static', filename='uploads/' + photo[2]) }}" width="300"><br>
+                Description: {{ photo[3] }}<br>
+                Keywords: {{ photo[4] }}<br>
+                <a href="{{ url_for('edit_post', post_id=photo[0]) }}"><button>Edit</button></a><br> 
+                <form action="{{ url_for('delete_post', post_id=photo[0]) }}" method="post">
+                    <input type="submit" value="Delete">
+                </form>
+                <form action="{{ url_for('send_post_message', post_id=photo[0]) }}" method="post">
+                    Message: <input type="text" name="content"><br>
+                    <input type="submit" value="Send Message">
+                </form>
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

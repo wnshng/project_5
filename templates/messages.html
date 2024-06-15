@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Messages</title>
+    <style>
+          .chat-container {
+            display: flex;
+        }
+        .chat-list {
+            width: 100%;
+            border-right: 1px solid #ccc;
+            padding: 10px;
+        }
+        .chat-box {
+            width: 70%;
+            padding: 10px;
+        }
+        .chat-box ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        .chat-box li {
+            padding: 5px 0;
+        }
+        body {
+               display: flex;
+               flex-direction: column;
+               align-items: center;
+               justify-content: center;
+               min-height: 100vh;
+               line-height: 1.8;
+           }
+        h1 {
+            font-weight: bold;
+            text-align: center;
+            background-color: #ffcc00;
+            color: #fff; 
+            padding: 1.5rem;
+            border-radius: 1rem; 
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
+        } 
+     </style>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <h1>Messages</h1>
+    <a href="{{ url_for('dashboard') }}">Back to Dashboard</a>
+    <div class="chat-container">
+        <div class="chat-list">
+            <h2>Chats</h2>
+            <ul>
+                {% for user in chat_users %}
+                    <li><a href="{{ url_for('messages', chat_user_id=user[0]) }}">{{ user[1] }}</a></li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="chat-box">
+            <h2>Chat with {{ chat_user_name }}</h2>
+            <ul>
+                {% for message in messages %}
+                    <li>
+                        <div>
+                            <strong>{{ message[5] }}:</strong> {{ message[3] }}<br>
+                            <small>{{ message[4] }}</small>
+                        </div>
+                        <form action="{{ url_for('delete_message', message_id=message[0]) }}" method="post">
+                            <input type="submit" value="Delete">
+                        </form>
+                    </li>
+                {% endfor %}
+            </ul>
+            <form action="{{ url_for('send_message') }}" method="post">
+                <input type="hidden" name="receiver_id" value="{{ chat_user_id }}">
+                <textarea name="content" placeholder="Type your message..." required></textarea><br>
+                <input type="submit" value="Send">
+            </form>
+        </div>
+    </div>
+</body>
+</html>

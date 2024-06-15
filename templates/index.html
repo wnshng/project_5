@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Index</title>
+    <style>
+        body {
+               display: flex;
+               flex-direction: column;
+               align-items: center;
+               justify-content: center;
+               min-height: 100vh;
+               line-height: 2;
+           }
+        h1 {
+            font-weight: bold;
+            text-align: center;
+            background-color: #ffcc00;
+            color: #fff; 
+            padding: 1.5rem;
+            border-radius: 1rem; 
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
+        } 
+     </style>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <h1>Welcome to the Photo Diary</h1>
+    <a href="{{ url_for('signup') }}">Sign Up</a>
+    <a href="{{ url_for('login') }}">Log In</a>
+    <a href="{{ url_for('user_list') }}">User List</a>
+</body>
+</html>

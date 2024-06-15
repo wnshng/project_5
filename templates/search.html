@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Search Photos</title>
+    <style>
+        body {
+               display: flex;
+               flex-direction: column;
+               align-items: center;
+               justify-content: center;
+               min-height: 100vh;
+               line-height: 2;
+           }
+        h1 {
+           font-weight: bold;
+           text-align: center;
+           background-color: #ffcc00;
+            color: #fff; 
+            padding: 1.5rem;
+            border-radius: 1rem; 
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
+        }
+     </style>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <h1>Search Photos</h1>
+    <a href="{{ url_for('dashboard') }}">Back to Dashboard</a>
+    <form action="{{ url_for('search') }}" method="post">
+        Keywords: <input type="text" name="keyword"><br> 
+        <input type="submit" value="Search">
+    </form>
+    {% if results %}
+        <h2>Search Results</h2>
+        <ul>
+            {% for photo in results %}
+                <li>
+                    Uploaded by: <a href="{{ url_for('user_profile', username=photo[5]) }}">{{ photo[5] }}</a><br>
+                    <img src="{{ url_for('static', filename='uploads/' + photo[2]) }}" width="500"><br>
+                    Description: {{ photo[3] }}<br>
+                    Keywords: {{ photo[4] }}<br>
+                    <form action="{{ url_for('send_post_message', post_id=photo[0]) }}" method="post">
+                        Message: <input type="text" name="content"><br>
+                        <input type="submit" value="Direct Message"><br>
+                    </form>
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+</body>
+</html>
